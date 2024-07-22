@@ -1,6 +1,8 @@
 package com.performance_go.CRUD_Farmacia.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "tb_categoria")
@@ -10,17 +12,14 @@ public class Categoria {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Categoria é obrigatório")
+    @Size(min = 3)
     private String categoria;
 
+    @NotBlank(message = "Descrição é obrigatório")
+    @Size(min = 3)
     private String descricao;
 
-    public Categoria(){}
-
-    public Categoria(Long id, String categoria, String descricao) {
-        this.id = id;
-        this.categoria = categoria;
-        this.descricao = descricao;
-    }
 
     public Long getId() {
         return id;
