@@ -1,8 +1,12 @@
 package com.performance_go.CRUD_Farmacia.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "tb_categoria")
@@ -20,6 +24,9 @@ public class Categoria {
     @Size(min = 3)
     private String descricao;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "categoria", cascade = CascadeType.REMOVE)
+    @JsonIgnore
+    List<Produto> produto = new ArrayList<>();
 
     public Long getId() {
         return id;
