@@ -1,6 +1,5 @@
 package com.performance_go.CRUD_Farmacia.controller;
 
-import com.performance_go.CRUD_Farmacia.model.Categoria;
 import com.performance_go.CRUD_Farmacia.model.Produto;
 import com.performance_go.CRUD_Farmacia.repository.CategoriaRepository;
 import com.performance_go.CRUD_Farmacia.repository.ProdutoRepository;
@@ -10,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -22,9 +20,15 @@ public class ProdutoController {
     @Autowired
     private ProdutoRepository produtoRepository;
 
+    @Autowired
+    private CategoriaRepository categoriaRepository;
+
+
     @PostMapping
-    public ResponseEntity<Produto> post(@Valid @RequestBody Produto produto){
-        return ResponseEntity.status(HttpStatus.CREATED).body(produtoRepository.save(produto));
+    public ResponseEntity<Produto> post(@Valid @RequestBody Produto produto) {
+        if (categoriaRepository.existsById(produto.getId()))
+            return ResponseEntity.status(HttpStatus.CREATED).body(produtoRepository.save(produto));
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Categoria não existe!");
     }
 
     @GetMapping
@@ -42,9 +46,13 @@ public class ProdutoController {
         return ResponseEntity.ok(produtoRepository.findAllByNomeContainingIgnoreCase(nome));
     }
 
+
     @PutMapping
-    public ResponseEntity<Produto> update(@Valid @RequestBody Produto produto){
-        return produtoRepository.findById(produto.getId()).map(res -> ResponseEntity.status(HttpStatus.OK).body(produtoRepository.save(produto))).orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    public ResponseEntity<Produto> put(@Valid @RequestBody Produto produto) {
+        if (produtoRepository.existsById(produto.getId()))
+                return ResponseEntity.status(HttpStatus.OK).body(produtoRepository.save(produto));
+
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "categoria não existe!");
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)

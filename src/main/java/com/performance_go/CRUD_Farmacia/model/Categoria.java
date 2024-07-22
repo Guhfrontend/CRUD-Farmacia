@@ -1,6 +1,7 @@
 package com.performance_go.CRUD_Farmacia.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -25,7 +26,7 @@ public class Categoria {
     private String descricao;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "categoria", cascade = CascadeType.REMOVE)
-    @JsonIgnore
+    @JsonIgnoreProperties("categoria")
     List<Produto> produto = new ArrayList<>();
 
     public Long getId() {
