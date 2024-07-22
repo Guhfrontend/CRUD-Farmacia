@@ -6,6 +6,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
@@ -21,7 +22,10 @@ public class CategoriaController {
 
     @PostMapping
     public ResponseEntity<Categoria> post(@Valid @RequestBody Categoria categoria){
+        if (categoria.getId() == null)
         return ResponseEntity.status(HttpStatus.CREATED).body(categoriaRepository.save(categoria));
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
     @GetMapping
