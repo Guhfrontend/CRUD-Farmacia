@@ -55,4 +55,18 @@ public class CategoriaControllerTest {
         assertEquals(HttpStatus.BAD_REQUEST, corpoResposta.getStatusCode());
 
     }
+
+    @Test
+    @DisplayName("Listar todas Categorias")
+    public void devMonstrarTodasCategorias(){
+
+        Categoria categoria = new Categoria(0l, "Categoria", "Descrição");
+
+        Categoria categoria1 = new Categoria(0l, "Categoria", "Descrição");
+
+        ResponseEntity<String> corpoResposta = testRestTemplate.exchange("/categorias", HttpMethod.GET, null, String.class);
+
+        assertEquals(HttpStatus.OK, corpoResposta.getStatusCode());
+
+    }
 }
